@@ -25,3 +25,23 @@ model.train(images, labels)
 
 fCascade = cv2.CascadeClassifier(face_file)
 camera = cv2.VideoCapture(0)
+
+while True:
+    index, image = camera.read()
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    faces = fCascade.detectMultiScale(gray, 1.6, 3)
+    for (x, y, w, h) in faces:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 200), 8)
+        faces = gray[y:y + h, x:x + w]
+        faces_resize = cv2.resize(faces, (w, h))
+
+        prediction = model.predict(faces_resize)
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        print(prediction)
+
+        if prediction[1] < 500:
+            cv2.putText(image, f'{names[prediction[0]]} | {round(prediction[1], 6)}%', (x-20, y-20),
+                        cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0))
+        else:
+            cv2.putText(image, 'not recognized', (x-20, y-20), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+

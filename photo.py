@@ -23,4 +23,11 @@ while count < 80:
     for (x, y, w, h) in faces:
         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 200), 4)
         faces = gray[y:y+h, x:x+w]
-        faces_resize = cv2.resize()
+        faces_resize = cv2.resize(faces, (w, h))
+        cv2.imwrite(f'{path}/{count}.png', faces_resize)
+    count += 1
+
+    cv2.imshow('opencv', image)
+    key = cv2.waitKey(10)
+    if key == 27:
+        break
