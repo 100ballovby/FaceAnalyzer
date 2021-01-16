@@ -45,3 +45,8 @@ while True:
         else:
             cv2.putText(image, 'not recognized', (x-20, y-20), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
 
+    cv2.imshow('Result', image)
+    key = cv2.waitKey(10)
+    if key == 27:
+        break
+
